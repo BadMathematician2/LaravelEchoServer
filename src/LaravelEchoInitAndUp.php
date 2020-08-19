@@ -51,14 +51,11 @@ class LaravelEchoInitAndUp extends Command
 
     private function createFile()
     {
-        $f = fopen(__DIR__ . '/echo/docker-compose.yml', 'w');
-        fwrite($f, 'version: "3"' . "\n");
-        fwrite($f, 'services:' . "\n");
-        fwrite($f, '    l_echo:' . "\n");
-        fwrite($f, '        image: badmathematician/echo_redis' . "\n");
-        fwrite($f, '        command: bash -c "service redis-server start && cd laravel-echo-server/ && laravel-echo-server client:add && laravel-echo-server start --dir=/laravel-echo-server"' . "\n");
-        fwrite($f, '        volumes:' . "\n");
-        fwrite($f, '            - ' . __DIR__ . '/echo/:/laravel-echo-server' . "\n");
+       $example = file_get_contents(__DIR__ . '/echo/docker-compose-example.txt');
+       $example = str_replace('|FILEPATH|',  __DIR__ . '/echo/', $example);
+       $f = fopen(__DIR__ . '/echo/docker-compose.yml', 'w');
+       fwrite($f, $example);
+       fclose($f);
     }
 
     private function init()
