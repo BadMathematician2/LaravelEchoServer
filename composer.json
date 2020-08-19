@@ -1,0 +1,28 @@
+{
+    "name": "mykola/laravel-echo-server",
+    "description": "Up docker with laravel-echo-server",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mykola",
+            "email": "mathematic204chnu@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "LaravelEchoServer\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "\\LaravelEchoServer\\LaravelEchoServerServiceProvider"
+            ],
+            "aliases": {
+                "LaravelEcho": "LaravelEchoServerFacade"
+            }
+        }
+    }
+}
