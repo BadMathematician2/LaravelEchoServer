@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Packages\LaravelEchoServer;
+namespace LaravelEchoServer;
 
 
 use Illuminate\Support\Facades\Facade;
