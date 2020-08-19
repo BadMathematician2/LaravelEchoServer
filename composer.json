@@ -1,5 +1,5 @@
 {
-    "name": "mykola/laravel-echo-server",
+    "name": "badMathematician/laravel-echo-server",
     "description": "Up docker with laravel-echo-server",
     "type": "library",
     "license": "MIT",
