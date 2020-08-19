@@ -12,16 +12,16 @@
     "require": {},
     "autoload": {
         "psr-4": {
-            "LaravelEchoServer\\": "src"
+            "LaravelEchoServer\\": "src/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "\\LaravelEchoServer\\LaravelEchoServerServiceProvider"
+                "LaravelEchoServer\\LaravelEchoServerServiceProvider"
             ],
             "aliases": {
-                "LaravelEcho": "LaravelEchoServerFacade"
+                "LaravelEcho": "LaravelEchoServer\\LaravelEchoServerFacade"
             }
         }
     }
