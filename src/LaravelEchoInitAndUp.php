@@ -22,6 +22,8 @@ class LaravelEchoInitAndUp extends Command
         $command->run();
         $containers = $command->getOutput();
 
+        $this->createFile();
+
         $this->upContainer($containers);
     }
 
@@ -45,6 +47,18 @@ class LaravelEchoInitAndUp extends Command
         } else {
             echo "Container is already run\n";
         }
+    }
+
+    private function createFile()
+    {
+        $f = fopen(__DIR__ . '/echo/docker-compose.yml', 'w');
+        fwrite($f, 'version: "3"' . "\n");
+        fwrite($f, 'services:' . "\n");
+        fwrite($f, '    l_echo:' . "\n");
+        fwrite($f, '        image: badmathematician/echo_redis' . "\n");
+        fwrite($f, '        command: bash -c "service redis-server start && cd laravel-echo-server/ && laravel-echo-server client:add && laravel-echo-server start --dir=/laravel-echo-server"' . "\n");
+        fwrite($f, '        volumes:' . "\n");
+        fwrite($f, '            - ' . __DIR__ . '/echo/:/laravel-echo-server' . "\n");
     }
 
     private function init()
