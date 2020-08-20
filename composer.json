@@ -9,7 +9,9 @@
             "email": "mathematic204chnu@gmail.com"
         }
     ],
-    "require": {},
+    "require": {
+        "laravel/framework": "^7.0"
+    },
     "autoload": {
         "psr-4": {
             "LaravelEchoServer\\": "src/"
