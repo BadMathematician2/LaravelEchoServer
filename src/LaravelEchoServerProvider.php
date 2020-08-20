@@ -6,7 +6,7 @@ namespace LaravelEchoServer;
 
 use Illuminate\Support\ServiceProvider;
 
-class LaravelEchoServerServiceProvider extends ServiceProvider
+class LaravelEchoServerProvider extends ServiceProvider
 {
     public function register()
     {
