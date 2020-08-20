@@ -3,8 +3,8 @@
 	"authEndpoint": "/broadcasting/auth",
 	"clients": [
 		{
-			"appId": "2fc36826e0382d3e",
-			"key": "d93f4231aba14f645d70feb16eea0a6b"
+			"appId": "293cbf4508688d60",
+			"key": "e5c65681a4c8a09290cc5ab848cd6094"
 		}
 	],
 	"database": "redis",
@@ -14,9 +14,9 @@
 			"databasePath": "/database/laravel-echo-server.sqlite"
 		}
 	},
-	"devMode": "true",
-	"host": "555",
-	"port": "6000",
+	"devMode": null,
+	"host": null,
+	"port": "6001",
 	"protocol": "http",
 	"secureOptions": 67108864,
 	"sslCertPath": "",
