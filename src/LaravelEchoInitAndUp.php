@@ -22,7 +22,7 @@ class LaravelEchoInitAndUp extends Command
         $command->run();
         $containers = $command->getOutput();
 
-        $this->createFile();
+        $this->createLink();
 
         $this->upContainer($containers);
     }
@@ -49,13 +49,15 @@ class LaravelEchoInitAndUp extends Command
         }
     }
 
-    private function createFile()
+    private function createLink()
     {
-       $example = file_get_contents(__DIR__ . '/echo/docker-compose-example.txt');
-       $example = str_replace('|FILEPATH|',  __DIR__ . '/echo/', $example);
-       $f = fopen(__DIR__ . '/echo/docker-compose.yml', 'w');
-       fwrite($f, $example);
-       fclose($f);
+        $command = new Process(['mkdir', '$HOME/echo']);
+        $command->run();
+        $command->wait();
+
+       $command = new Process(['ln', __DIR__ . '/echo/laravel-echo-server.json', '$HOME/echo']);
+       $command->run();
+       $command->wait();
     }
 
     private function init()
