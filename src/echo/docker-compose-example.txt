@@ -1,7 +1,0 @@
-version: "3"
-services:
-    l_echo:
-        image: badmathematician/echo_redis
-        command: bash -c "service redis-server start && cd laravel-echo-server/ && laravel-echo-server client:add && laravel-echo-server start --dir=/laravel-echo-server"
-        volumes:
-            - |FILEPATH|:/laravel-echo-server

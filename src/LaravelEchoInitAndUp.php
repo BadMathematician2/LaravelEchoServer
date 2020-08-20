@@ -40,7 +40,7 @@ class LaravelEchoInitAndUp extends Command
                 \LaravelEcho::initWithFile($this->argument('filename'));
             }
 
-            $command = new Process(['docker-compose', '-f', \LaravelEcho::getPath() . '/echo/docker-compose.yml',
+            $command = new Process(['docker-compose', '-f', \LaravelEcho::getPath() . '/docker-compose.yml',
                 '-p', 'laravel_echo_server', 'up', '-d']);
             $command->run();
 
@@ -55,9 +55,9 @@ class LaravelEchoInitAndUp extends Command
         $command->run();
         $command->wait();
 
-       $command = new Process(['ln', __DIR__ . '/echo/laravel-echo-server.json', '$HOME/echo']);
-       $command->run();
-       $command->wait();
+        $c = new Process(['ln', '-s', '/home/mykola/work/laravel/test2/app/Packages/LaravelEchoServer/src/echo/', '/home/mykola']);
+        $c->run();
+        $ech = $c->getOutput();
     }
 
     private function init()
