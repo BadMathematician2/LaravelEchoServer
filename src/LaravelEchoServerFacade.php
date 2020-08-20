@@ -10,7 +10,7 @@ class LaravelEchoServerFacade extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return 'LaravelEchoServerContainer';
+        return 'LaravelEchoServer';
     }
 
 }

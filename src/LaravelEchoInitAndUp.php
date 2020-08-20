@@ -9,6 +9,9 @@ use Symfony\Component\Process\Process;
 
 class LaravelEchoInitAndUp extends Command
 {
+    /**
+     * @var string
+     */
     protected $signature = 'init-echo {filename?}';
 
     /**
@@ -18,46 +21,49 @@ class LaravelEchoInitAndUp extends Command
 
     public function handle()
     {
-        $command = new Process(['docker', 'ps', '-f', 'name=laravel_echo_server_l_echo_1']);
-        $command->run();
-        $containers = $command->getOutput();
+        $c = new Process(['bash', '-c', 'echo $HOME']);
+        $c->run();
+        $home_path = stristr($c->getOutput(), "\n", true);
 
-        $this->createLink();
+        \LaravelEcho::createLink($home_path);
 
-        $this->upContainer($containers);
+        if (\LaravelEcho::isRunning()) {
+            if (null === $this->argument('filename')) {
+                $this->init();
+                $this->createJsonFile();
+            } else {
+                $this->initWithFile($this->argument('filename'));
+            }
+        }
+
+        \LaravelEcho::upContainer();
     }
 
     /**
-     * @param string $containers
+     * @param string $filename
      */
-    private function upContainer($containers)
+    public function initWithFile($filename)
     {
-        if (stristr($containers, "\n") === "\n") {
-            if (null === $this->argument('filename')) {
-                $this->init();
-                \LaravelEcho::createJsonFile();
-            } else {
-                \LaravelEcho::initWithFile($this->argument('filename'));
-            }
+        $f = fopen($filename, 'r');
+        $params = [];
 
-            $command = new Process(['docker-compose', '-f', \LaravelEcho::getPath() . '/docker-compose.yml',
-                '-p', 'laravel_echo_server', 'up', '-d']);
-            $command->run();
-
-        } else {
-            echo "Container is already run\n";
+        $s = fgets($f, 99);
+        while (null != $s) {
+            try {
+                $st = explode('=', $s);
+                $params[$st[0]] = stristr($st[1], "\n", true);
+            } catch (\Exception $exception) {}
+            $s = fgets($f, 99);
         }
-    }
+        fclose($f);
 
-    private function createLink()
-    {
-        $command = new Process(['mkdir', '$HOME/echo']);
-        $command->run();
-        $command->wait();
+        foreach ($params as $key => $value) {
+            if (key_exists($key, \LaravelEcho::getParams())) {
+                \LaravelEcho::setParams($key, $value);
+            }
+        }
+        $this->createJsonFile();
 
-        $c = new Process(['ln', '-f', '-s', __DIR__ . '/echo/', '/home/mykola']);
-        $c->run();
-        $c->wait();
     }
 
     private function init()
@@ -80,6 +86,11 @@ class LaravelEchoInitAndUp extends Command
             \LaravelEcho::setParams('sslKeyPath', $answer);
         }
 
+    }
+
+    private function createJsonFile()
+    {
+        file_put_contents(__DIR__ . '/echo/laravel-echo-server.json', json_encode(\LaravelEcho::getParams()));
 
     }
 }
