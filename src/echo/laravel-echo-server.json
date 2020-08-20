@@ -5,6 +5,10 @@
 		{
 			"appId": "293cbf4508688d60",
 			"key": "e5c65681a4c8a09290cc5ab848cd6094"
+		},
+		{
+			"appId": "e5f1e711899e51d6",
+			"key": "c3b0e3b91979d2ab842dcab5eddaefbb"
 		}
 	],
 	"database": "redis",

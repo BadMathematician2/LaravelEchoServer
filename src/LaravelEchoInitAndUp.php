@@ -55,7 +55,7 @@ class LaravelEchoInitAndUp extends Command
         $command->run();
         $command->wait();
 
-        $c = new Process(['ln', '-f', '-s', '/home/mykola/work/laravel/test2/app/Packages/LaravelEchoServer/src/echo/', '/home/mykola']);
+        $c = new Process(['ln', '-f', '-s', __DIR__ . '/echo/', '/home/mykola']);
         $c->run();
         $c->wait();
     }
