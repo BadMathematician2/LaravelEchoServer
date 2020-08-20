@@ -20,7 +20,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "LaraveEchoServer\\LaravelEchoServerProvider"
+                "LaravelEchoServer\\LaravelEchoServerProvider"
             ],
             "aliases": {
                 "LaravelEcho": "LaravelEchoServer\\LaravelEchoServerFacade"
