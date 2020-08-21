@@ -5,6 +5,7 @@ namespace LaravelEchoServer;
 
 
 use Illuminate\Support\ServiceProvider;
+use LaravelEchoServer\Commands\LaravelEchoInitAndUp;
 
 class LaravelEchoServerProvider extends ServiceProvider
 {
@@ -23,5 +24,9 @@ class LaravelEchoServerProvider extends ServiceProvider
         $this->mergeConfigFrom(
             __DIR__ . '/config/laravel-echo-server.php','echo'
         );
+        $this->mergeConfigFrom(
+            __DIR__ . '/config/asks_list.php','asks'
+        );
     }
+
 }

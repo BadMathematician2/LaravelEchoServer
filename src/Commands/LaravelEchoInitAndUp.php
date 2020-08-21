@@ -1,7 +1,7 @@
 <?php
 
 
-namespace LaravelEchoServer;
+namespace LaravelEchoServer\Commands;
 
 
 use Illuminate\Console\Command;
@@ -59,7 +59,7 @@ class LaravelEchoInitAndUp extends Command
 
         foreach ($params as $key => $value) {
             if (key_exists($key, \LaravelEcho::getParams())) {
-                \LaravelEcho::setParams($key, $value);
+                \LaravelEcho::setParam($key, $value);
             }
         }
         $this->createJsonFile();
@@ -68,29 +68,32 @@ class LaravelEchoInitAndUp extends Command
 
     private function init()
     {
-        if ($this->ask('Do you want to run this server in development mode? (yes/No)', 'No') === 'yes') {
-            \LaravelEcho::setParams('devMode', true);
+        $asks_list = config('asks');
+
+        foreach ($asks_list as $item) {
+            $this->takeAnswers($item);
         }
-        $answer = $this->ask('Which port would you like to serve from? (6001)', '6001');
-        if ($answer !== '') {
-            \LaravelEcho::setParams('port', $answer);
-        }
-        $answer = $this->ask('Enter the host of your Laravel authentication server. (http://localhost)', 'http://localhost');
-        if ($answer !== '') {
-            \LaravelEcho::setParams('authHost', $answer);
-        }
-        $answer = $this->ask('Will you be serving on http or https?', 'http');
-        if ('https' === $answer) {
-            \LaravelEcho::setParams('protocol', 'https');
-            $answer = $this->ask('Enter the path to your SSL cert file.');
-            \LaravelEcho::setParams('sslKeyPath', $answer);
+    }
+
+    private function takeAnswers($item)
+    {
+        $answer = $this->ask($item['ask'], $item['value']);
+        if ($item['validator']($answer)) {
+            $item['value'] = $answer;
+
+            if (isset($item['others'])) {
+                foreach ($item['others'] as $other) {
+                    $this->takeAnswers($other);
+                }
+            }
         }
 
+        \LaravelEcho::setParam($item['key'], $item['value']);
     }
 
     private function createJsonFile()
     {
-        file_put_contents(__DIR__ . '/echo/laravel-echo-server.json', json_encode(\LaravelEcho::getParams()));
+        return file_put_contents(\LaravelEcho::getPathTo('/echo/laravel-echo-server.json') , json_encode(\LaravelEcho::getParams()));
 
     }
 }
