@@ -34,7 +34,7 @@ class LaravelEchoInitAndUp extends Command
             } else {
                 $this->initWithFile($this->argument('filename'));
             }
-        }
+        } else $this->info('Container already running');
 
         \LaravelEcho::upContainer();
     }

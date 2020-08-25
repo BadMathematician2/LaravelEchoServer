@@ -48,6 +48,9 @@ class LaravelEchoServer
         return $c;
     }
 
+    /**
+     * @return bool
+     */
     public function isRunning()
     {
         $command = new Process(['docker', 'ps', '-f', 'name=laravel_echo_server_l_echo_1']);
@@ -56,6 +59,9 @@ class LaravelEchoServer
         return empty(trim(stristr($command->getOutput(), "\n")));
     }
 
+    /**
+     * @return Process
+     */
     public function upContainer()
     {
         $command = new Process(['docker-compose', '-f', $this->getPathTo('/docker-compose.yml'),
@@ -65,6 +71,10 @@ class LaravelEchoServer
         return $command;
     }
 
+    /**
+     * @param string $to
+     * @return string
+     */
     public function getPathTo($to)
     {
         return __DIR__ . $to;
