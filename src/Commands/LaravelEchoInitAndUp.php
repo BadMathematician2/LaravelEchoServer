@@ -27,16 +27,17 @@ class LaravelEchoInitAndUp extends Command
 
         \LaravelEcho::createLink($home_path);
 
-        if (\LaravelEcho::isRunning()) {
+        if (\LaravelEcho::notRunning()) {
             if (null === $this->argument('filename')) {
                 $this->init();
                 $this->createJsonFile();
             } else {
                 $this->initWithFile($this->argument('filename'));
             }
-        } else $this->info('Container already running');
 
-        \LaravelEcho::upContainer();
+            \LaravelEcho::upContainer();
+
+        } else $this->info('Container already running');
     }
 
     /**

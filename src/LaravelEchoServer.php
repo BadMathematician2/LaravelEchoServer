@@ -51,7 +51,7 @@ class LaravelEchoServer
     /**
      * @return bool
      */
-    public function isRunning()
+    public function notRunning()
     {
         $command = new Process(['docker', 'ps', '-f', 'name=laravel_echo_server_l_echo_1']);
         $command->run();
