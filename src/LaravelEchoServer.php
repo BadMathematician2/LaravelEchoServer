@@ -42,7 +42,7 @@ class LaravelEchoServer
      */
     public function createLink($home_path)
     {
-        $c = new Process(['ln', '-f', '-s',$this->getPathTo('/echo/'), $home_path]);
+        $c = new Process(['ln', '-f', '-s',$this->getEchoPath(), $home_path]);
         $c->run();
 
         return $c;
@@ -51,12 +51,12 @@ class LaravelEchoServer
     /**
      * @return bool
      */
-    public function notRunning()
+    public function isRunning()
     {
         $command = new Process(['docker', 'ps', '-f', 'name=laravel_echo_server_l_echo_1']);
         $command->run();
 
-        return empty(trim(stristr($command->getOutput(), "\n")));
+        return ! empty(trim(stristr($command->getOutput(), "\n")));
     }
 
     /**
@@ -64,7 +64,7 @@ class LaravelEchoServer
      */
     public function upContainer()
     {
-        $command = new Process(['docker-compose', '-f', $this->getPathTo('/docker-compose.yml'),
+        $command = new Process(['docker-compose', '-f', $this->getPathTo('docker-compose.yml'),
             '-p', 'laravel_echo_server', 'up', '-d']);
         $command->run();
 
@@ -72,12 +72,21 @@ class LaravelEchoServer
     }
 
     /**
-     * @param string $to
+     * @param string|null $to
      * @return string
      */
-    public function getPathTo($to)
+    private function getPathTo($to = null)
     {
-        return __DIR__ . $to;
+        return __DIR__ . '/' . $to;
+    }
+
+    /**
+     * @param string|null $to
+     * @return string
+     */
+    public function getEchoPath($to = null)
+    {
+        return $this->getPathTo('echo/' . $to);
     }
 
 }

@@ -11,13 +11,11 @@ return [
         'key' => 'port',
         'value' => '6001',
         'ask' => 'Which port would you like to serve from?',
-        'validator' => function ($value) { return $value !== ''; }
     ],
     [
         'key' => 'authHost',
         'value' => 'http://localhost',
         'ask' => 'Enter the host of your Laravel authentication server.',
-        'validator' => function ($value) { return $value !== ''; }
     ],
     [
         'key' => 'protocol',

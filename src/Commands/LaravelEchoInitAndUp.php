@@ -21,23 +21,27 @@ class LaravelEchoInitAndUp extends Command
 
     public function handle()
     {
+
+        if (\LaravelEcho::isRunning()) {
+            $this->info('Container already running');
+            return ;
+        }
+
         $c = new Process(['bash', '-c', 'echo $HOME']);
         $c->run();
         $home_path = stristr($c->getOutput(), "\n", true);
 
         \LaravelEcho::createLink($home_path);
 
-        if (\LaravelEcho::notRunning()) {
-            if (null === $this->argument('filename')) {
-                $this->init();
-                $this->createJsonFile();
-            } else {
-                $this->initWithFile($this->argument('filename'));
-            }
+        if (null === $this->argument('filename')) {
+            $this->init();
+            $this->createJsonFile();
+        } else {
+            $this->initWithFile($this->argument('filename'));
+        }
 
-            \LaravelEcho::upContainer();
+        \LaravelEcho::upContainer();
 
-        } else $this->info('Container already running');
     }
 
     /**
@@ -79,7 +83,11 @@ class LaravelEchoInitAndUp extends Command
     private function takeAnswers($item)
     {
         $answer = $this->ask($item['ask'], $item['value']);
-        if ($item['validator']($answer)) {
+        $validator = $item['validator'] ?? function($value) {
+          return   $value !== '';
+        };
+
+        if ($validator($answer)) {
             $item['value'] = $answer;
 
             if (isset($item['others'])) {
@@ -94,7 +102,7 @@ class LaravelEchoInitAndUp extends Command
 
     private function createJsonFile()
     {
-        return file_put_contents(\LaravelEcho::getPathTo('/echo/laravel-echo-server.json') , json_encode(\LaravelEcho::getParams()));
+        return file_put_contents(\LaravelEcho::getEchoPath('laravel-echo-server.json') , json_encode(\LaravelEcho::getParams()));
 
     }
 }
